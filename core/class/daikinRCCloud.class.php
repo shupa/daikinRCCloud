@@ -115,6 +115,14 @@ class daikinRCCloud extends eqLogic {
 		$pid = trim(shell_exec('ps ax | grep "resources/daikinRCCloud.js" | grep -v "grep" | wc -l'));
 		if ($pid != '' && $pid != '0') $return['state'] = 'ok';
 
+		$sensor_path = realpath(dirname(__FILE__) . '/../../resources');
+		if (!file_exists($sensor_path . '/tokenset.json')) {
+			$return['launchable'] = 'nok';
+			$return['launchable_message'] = "Not find token File";
+		} else {
+			$return['launchable'] = 'ok';
+		}
+
 		return $return;
 	}
 
@@ -124,9 +132,9 @@ class daikinRCCloud extends eqLogic {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
 		log::add('daikinRCCloud', 'info', 'Lancement du deamon');
-		$url = network::getNetworkAccess('internal', 'proto:127.0.0.1:port:comp') . '/plugins/daikinRCCloud/core/api/jeedaikinRCCloud.php?apikey=' . jeedom::getApiKey('daikinRCCloud');
+
 		$sensor_path = realpath(dirname(__FILE__) . '/../../resources');
-		$cmd = 'nice -n 19 node ' . $sensor_path . '/daikinRCCloud.js ' . network::getNetworkAccess('internal') . ' ' . config::byKey('Token', 'daikinRCCloud') . ' ' . log::getLogLevel('daikinRCCloud') . ' ' . $url . ' ' . jeedom::getApiKey('daikinRCCloud');
+		$cmd = 'nice -n 19 node ' . $sensor_path . '/daikinRCCloud.js';
 		log::add('daikinRCCloud', 'debug', 'Lancement démon daikinRCCloud : ' . $cmd);
 		$result = exec('NODE_ENV=production nohup ' . $cmd . ' >> ' . log::getPathToLog('daikinRCCloud_node') . ' 2>&1 &');
 		if (strpos(strtolower($result), 'error') !== FALSE || strpos(strtolower($result), 'traceback') !== FALSE) {

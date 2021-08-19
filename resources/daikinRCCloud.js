@@ -1,61 +1,86 @@
-const express = require('express');
-require('fs');
+const DaikinCloud = require('daikin-controller-cloud');
+const fs = require('fs');
+const path = require('path');
 
-const app = express();
-let server = null;
+async function main() {
+    /**
+     * Options to initialize the DaikinCloud instance with
+     */
+    const options = {
+        logger: console.log,          // optional, logger function used to log details depending on loglevel
+        logLevel: 'info',             // optional, Loglevel of Library, default 'warn' (logs nothing by default)
+        proxyOwnIp: '127.0.0.1',// required, if proxy needed: provide own IP or hostname to later access the proxy
+        proxyPort: 8888,              // required: use this port for the proxy and point your client device to this port
+        proxyWebPort: 8889,           // required: use this port for the proxy web interface to get the certificate and start Link for login
+        proxyListenBind: '0.0.0.0',   // optional: set this to bind the proxy to a special IP, default is '0.0.0.0'
+        proxyDataDir: process.cwd()       // Directory to store certificates and other proxy relevant data to
+    };
 
-/***** Stop the server *****/
-app.get('/stop', (req, res) => {
-    config.logger('daikinRCCloud: Shutting down');
-    res.status(200).json({});
-    server.close(() => {
-        process.exit(0);
+    let tokenSet;
+
+    // Load Tokens if they already exist on disk
+    const tokenFile = path.join(__dirname, 'tokenset.json');
+    if (fs.existsSync(tokenFile)) {
+        tokenSet = JSON.parse(fs.readFileSync(tokenFile).toString());
+    }
+
+    // Initialize Daikin Cloud Instance
+    const daikinCloud = new DaikinCloud(tokenSet, options);
+
+    // Event that will be triggered on new or updated tokens, save into file
+    daikinCloud.on('token_update', tokenSet => {
+        console.log(`UPDATED tokens, use for future and wrote to tokenset.json`);
+        fs.writeFileSync(tokenFile, JSON.stringify(tokenSet));
     });
-});
 
-/* Configuration */
-const config = {
-    logger: console,
-    listeningPort: 3477
-};
+    // If no tokens are existing start Proxy server process
+    if (! tokenSet) {
+        // start server
+        await daikinCloud.initProxyServer();
+        console.log(`Please visit http://${options.proxyOwnIp}:${options.proxyWebPort} and Login to Daikin Cloud please.`);
+        console.log();
 
-let dernierStartServeur = 0;
+        // wait for user Login and getting the tokens
+        const resultTokenSet = await daikinCloud.waitForTokenFromProxy();
+        console.log(`Retrieved tokens, use for future: ${JSON.stringify(resultTokenSet)}`);
 
-function console(text, level = '') {
-    try {
-        let niveauLevel;
-        switch (level) {
-            case "ERROR":
-                niveauLevel = 400;
-                break;
-            case "WARNING":
-                niveauLevel = 300;
-                break;
-            case "INFO":
-                niveauLevel = 200;
-                break;
-            case "DEBUG":
-                niveauLevel = 100;
-                break;
-            default:
-                niveauLevel = 400; //pour trouver ce qui n'a pas été affecté à un niveau
-                break;
+        // stop Proxy server (and wait 1s before we do that to make sure
+        // the success page can be displayed correctly because waitForTokenFromProxy
+        // will resolve before the last request is sent to the browser!
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await daikinCloud.stopProxyServer();
+    }
+    // show some details about the tokens (could be outdated because first real request is done afterwards
+    console.log('Use Token with the following claims: ' + JSON.stringify(daikinCloud.getTokenSet().claims()));
+
+    const daikinDeviceDetails = await daikinCloud.getCloudDeviceDetails();
+    //console.log(`Cloud Device Details: ${JSON.stringify(daikinDeviceDetails)}`);
+
+    const devices = await daikinCloud.getCloudDevices();
+
+    if (devices && devices.length) {
+        for (let dev of devices) {
+            console.log('Device ' + dev.getId() + ' Data:');
+            console.log('    last updated: ' + dev.getLastUpdated());
+            console.log('    modelInfo: ' + dev.getData('gateway', 'modelInfo').value);
+            console.log('    temp auto set room: ' + dev.getData('climateControl', 'temperatureControl', '/operationModes/auto/setpoints/roomTemperature').value);
+            console.log('    Full mapped description: ' + dev.getData());
+            console.log(dev.getData());
+            console.log(dev.getData('climateControl', 'streamerMode', 'values'));
+
+            // only partially tested, needs to be checked!!
+            await dev.setData('gateway', 'ledEnabled', true);
+            await dev.setData('climateControl', 'onOffMode', 'on');
+            await dev.setData('climateControl', 'temperatureControl', '/operationModes/auto/setpoints/roomTemperature', 18);
+            await dev.setData('climateControl', 'streamerMode', 'value',  'on');
+            await dev.updateData();
         }
-    } catch (e) {
-        console.log(arguments[0]);
+    } else {
+        console.log('No devices returned');
     }
 }
 
-startServer();
-
-function startServer() {
-    dernierStartServeur = Date.now();
-
-    config.logger('daikinRCCloud:    ******************** Lancement BOT ***********************', 'INFO');
-
-    server = app.listen(config.listeningPort, () => {
-        config.logger('daikinRCCloud:    **************************************************************', 'INFO');
-        config.logger('daikinRCCloud:    ************** Server OK listening on port ' + server.address().port + ' **************', 'INFO');
-        config.logger('daikinRCCloud:    **************************************************************', 'INFO');
-    });
-}
+(async () => {
+    await main();
+    process.exit();
+})();

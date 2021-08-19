@@ -37,14 +37,16 @@ if (!isConnect()) {
         <sup><i class="fas fa-question-circle tooltips" title="{{Renseignez le mot de passe de votre compte Daikin}}"></i></sup>
       </label>
       <div class="col-md-4">
-        <input class="configKey form-control" data-l1key="password"/>
+        <input class="configKey form-control" data-l1key="password" type="password"/>
       </div>
     </div>
 	<div class="form-group">
-		<label class="col-sm-4 control-label">{{Equipements enregistrés}}</label>
+		<label class="col-sm-4 control-label">{{Générer le token}}</label>
 		<div class="col-sm-2">
-			<a class="btn btn-default" id="bt_createEq" ><i class="fas fa-cogs"></i> {{Lancer la création}}</a>
+			<a class="btn btn-default" id="bt_generateToken" ><i class="fas fa-cogs"></i> {{Générer le token}}</a>
 		</div>
 	</div>
   </fieldset>
 </form>
+
+<?php include_file('desktop', 'daikinRCCloud_Config', 'js', 'daikinRCCloud');?>

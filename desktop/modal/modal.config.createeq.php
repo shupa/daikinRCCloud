@@ -21,19 +21,19 @@ if (!isConnect('admin')) {
 <div id='div_configcreateeq' style="display: none;"></div>
 <!--a class="btn btn-warning pull-right" data-state="1" id="bt_harmonyLogStopStart"><i class="fa fa-pause"></i> {{Pause}}</a>
 <input class="form-control pull-right" id="in_harmonyLogSearch" style="width : 300px;" placeholder="{{Rechercher}}" /-->
-Login : <?=config::byKey('login', 'daikin-residential-controller-cloud')?><br/>
+Login : <?=config::byKey('login', 'daikinRCCloud')?><br/>
 <pre id='pre_daikinconfig' style='overflow: auto; height: 90%;with:90%;'>
 <?php
-if (!file_exists('./plugins/daikin-residential-controller-cloud/3rdparty/Apollon77-daikin-controller-cloud/tokenset.json')) {
+if (!file_exists('./plugins/daikinRCCloud/3rdparty/Apollon77-daikin-controller-cloud/tokenset.json')) {
   echo "Récupération d''un token de connexion";
-  $request_shell = new com_shell('whoami;cd ./plugins/daikin-residential-controller-cloud/3rdparty/Apollon77-daikin-controller-cloud;node example/tokensaver.js ' . config::byKey('login', 'daikin-residential-controller-cloud') . ' ' . config::byKey('password', 'daikin-residential-controller-cloud') . ' 2>&1');
-  log::add('daikin-residential-controller-cloud', 'debug', 'Execution de : ' . $request_shell->getCmd());
+  $request_shell = new com_shell('whoami;cd ./plugins/daikinRCCloud/3rdparty/Apollon77-daikin-controller-cloud;node example/tokensaver.js ' . config::byKey('login', 'daikinRCCloud') . ' ' . config::byKey('password', 'daikinRCCloud') . ' 2>&1');
+  log::add('daikinRCCloud', 'debug', 'Execution de : ' . $request_shell->getCmd());
   $result = trim($request_shell->exec());
-  log::add('daikin-residential-controller-cloud', 'debug', 'Résultat : ' . $result);
+  log::add('daikinRCCloud', 'debug', 'Résultat : ' . $result);
 }
-$request_shell = new com_shell('cd ./plugins/daikin-residential-controller-cloud/3rdparty/Apollon77-daikin-controller-cloud;node example/example.js 2>&1');
+$request_shell = new com_shell('cd ./plugins/daikinRCCloud/3rdparty/Apollon77-daikin-controller-cloud;node example/example.js 2>&1');
 $result = trim($request_shell->exec());
-log::add('daikin-residential-controller-cloud', 'debug', 'Résultat : ' . $result);
+log::add('daikinRCCloud', 'debug', 'Résultat : ' . $result);
 ?>
 <?=$result?>
 </pre>

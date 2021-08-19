@@ -19,7 +19,7 @@
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
-class daikin-residential-controller-cloud extends eqLogic {
+class daikinRCCloud extends eqLogic {
     /*     * *************************Attributs****************************** */
     
   /*
@@ -116,6 +116,95 @@ class daikin-residential-controller-cloud extends eqLogic {
         
     }
 
+	public static function dependancy_info() {
+		$return = array();
+		$return['log'] = 'daikinRCCloud_dep';
+		$resources = realpath(dirname(__FILE__) . '/../../resources/');
+		$packageJson=json_decode(file_get_contents($resources.'/package.json'),true);
+		$state='ok';
+		foreach($packageJson["dependencies"] as $dep => $ver){
+			if(!file_exists($resources.'/node_modules/'.$dep.'/package.json')) {
+				$state='nok';
+			}
+		}
+		$return['progress_file'] = jeedom::getTmpFolder('daikinRCCloud') . '/dependance';
+		$return['state']=$state;
+		return $return;
+	}
+
+	public static function dependancy_install($verbose = "false") {
+		if (file_exists(jeedom::getTmpFolder('daikinRCCloud') . '/dependance')) {
+			return false;
+		}
+		log::remove('daikinRCCloud_dep');
+		$_debug = 0;
+		if (log::getLogLevel('daikinRCCloud') == 100 || $verbose === "true" || $verbose === true) $_debug = 1;
+		log::add('daikinRCCloud', 'info', 'Installation des dépendances : ');
+		$resource_path = realpath(dirname(__FILE__) . '/../../resources');
+		return array('script' => $resource_path . '/install.sh ' . $resource_path . ' daikinRCCloud ' . $_debug, 'log' => log::getPathToLog('daikinRCCloud_dep'));
+	}
+
+	public static function deamon_info() {
+		$return = array();
+		$return['log'] = 'daikinRCCloud_node';
+		$return['state'] = 'nok';
+
+		// Regarder si daikinRCCloud.js est lancé
+		$pid = trim(shell_exec('ps ax | grep "resources/daikinRCCloud.js" | grep -v "grep" | wc -l'));
+		if ($pid != '' && $pid != '0') $return['state'] = 'ok';
+
+		return $return;
+	}
+
+	public static function deamon_start($_debug = false) {
+		self::deamon_stop();
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['launchable'] != 'ok') throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
+		log::add('daikinRCCloud', 'info', 'Lancement du deamon');
+		$url = network::getNetworkAccess('internal', 'proto:127.0.0.1:port:comp') . '/plugins/daikinRCCloud/core/api/jeedaikinRCCloud.php?apikey=' . jeedom::getApiKey('daikinRCCloud');
+		$sensor_path = realpath(dirname(__FILE__) . '/../../resources');
+		$cmd = 'nice -n 19 node ' . $sensor_path . '/daikinRCCloud.js ' . network::getNetworkAccess('internal') . ' ' . config::byKey('Token', 'daikinRCCloud') . ' '.log::getLogLevel('daikinRCCloud') . ' ' . $url . ' ' . jeedom::getApiKey('daikinRCCloud');
+		log::add('daikinRCCloud', 'debug', 'Lancement démon daikinRCCloud : ' . $cmd);
+		$result = exec('NODE_ENV=production nohup ' . $cmd . ' >> ' . log::getPathToLog('daikinRCCloud_node') . ' 2>&1 &');
+		if (strpos(strtolower($result), 'error') !== false || strpos(strtolower($result), 'traceback') !== false) {
+			log::add('daikinRCCloud', 'error', $result);
+			return false;
+		}
+		$i = 0;
+		while ($i < 30) {
+			$deamon_info = self::deamon_info();
+			if ($deamon_info['state'] == 'ok') break;
+			sleep(1);
+			$i++;
+		}
+		if ($i >= 30) {
+			log::add('daikinRCCloud', 'error', 'Impossible de lancer le démon daikinRCCloud, vérifiez le port', 'unableStartDeamon');
+			return false;
+		}
+		message::removeAll('daikinRCCloud', 'unableStartDeamon');
+		log::add('daikinRCCloud', 'info', 'Démon daikinRCCloud lancé');
+		return true;
+	}
+
+	public static function deamon_stop() {
+		log::add('daikinRCCloud', 'info', 'Arrêt du service daikinRCCloud');
+		@file_get_contents("http://" . config::byKey('internalAddr') . ":3466/stop");
+		sleep(3);
+		if(shell_exec('ps aux | grep "resources/daikinRCCloud.js" | grep -v "grep" | wc -l') == '1') {
+			exec('sudo kill $(ps aux | grep "resources/daikinRCCloud.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+			$deamon_info = self::deamon_info();
+			if ($deamon_info['state'] == 'ok') {
+				sleep(1);
+				exec('sudo kill -9 $(ps aux | grep "resources/daikinRCCloud.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+			}
+			$deamon_info = self::deamon_info();
+			if ($deamon_info['state'] == 'ok') {
+				sleep(1);
+				exec('sudo kill -9 $(ps aux | grep "resources/daikinRCCloud.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+			}
+		}
+	}
+
     /*
      * Non obligatoire : permet de modifier l'affichage du widget (également utilisable par les commandes)
       public function toHtml($_version = 'dashboard') {
@@ -138,7 +227,7 @@ class daikin-residential-controller-cloud extends eqLogic {
     /*     * **********************Getteur Setteur*************************** */
 }
 
-class daikin-residential-controller-cloudCmd extends cmd {
+class daikinRCCloudCmd extends cmd {
     /*     * *************************Attributs****************************** */
     
     /*

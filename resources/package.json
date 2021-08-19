@@ -1,0 +1,15 @@
+{
+  "name": "daikinrccloud",
+  "version": "1.0.0",
+  "description": "Deamon pour le plugin RCCCloud",
+  "main": "deamon.js",
+  "scripts": {
+    "test": "node deamon.js"
+  },
+  "author": "Mikol et Thibaut Trarbach",
+  "license": "ISC",
+  "dependencies": {
+    "daikin-controller-cloud": "^0.2.0",
+    "express": "^4.17.1"
+  }
+}

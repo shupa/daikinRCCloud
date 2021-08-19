@@ -1,16 +1,14 @@
 {
 	"id" : "daikinRCCloud",
 	"name" : "Daikin Residential Controller Cloud",
-	"description" : {
-		"fr_FR": "Plugin pour gérer les appareils Daikin via le cloud Daikin Residential Controller"
-	},
+	"description" : "Plugin pour gérer les appareils Daikin via le cloud Daikin Residential Controller",
 	"licence" : "AGPL",
 	"author" : "Mikol",
-	"require" : "3.3.39",
+	"require" : "3.3",
 	"category" : "wellness",
 	"hasDependency" : true,
 	"hasOwnDeamon" : true,
-	"maxDependancyInstallTime" : 300,
+	"maxDependancyInstallTime" : 600,
 	"changelog" : "https://jeedom.github.io/plugin-template/#language#/changelog",
 	"documentation" : "https://jeedom.github.io/plugin-template/#language#/",
 	"link" : {

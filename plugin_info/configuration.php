@@ -48,13 +48,3 @@ if (!isConnect()) {
 	</div>
   </fieldset>
 </form>
-<script>
-  $('#bt_createEq').on('click', function () {
-    bootbox.confirm('{{Etes-vous sûr de vouloir installer/mettre à jour vos équipements ? }}', function (result) {
-      if (result) {
-        $('#md_modal').dialog({title: "{{Installation / Mise à jour ! Veuillez patienter jusqu\'à l\'apparition du message de fin}}"});
-        $('#md_modal').load('index.php?v=d&plugin=daikinRCCloud&modal=modal.config.createeq').dialog('open');
-      }
-    });
-  });
-</script>

@@ -32,7 +32,7 @@
 			if (!file_exists($sensor_path . '/tokenset.json')) {
 				log::add('daikinRCCloud_token', 'info', 'Récupération d\'un token de connexion');
 
-				$cmd = 'sudo node ' . $sensor_path . '/tokensaver.js "' . config::byKey('login', 'daikinRCCloud') . '" "' . config::byKey('password', 'daikinRCCloud').'"';
+				$cmd = 'node ' . $sensor_path . '/tokensaver.js "' . config::byKey('login', 'daikinRCCloud') . '" "' . config::byKey('password', 'daikinRCCloud').'"';
 				log::add('daikinRCCloud_token', 'debug', 'Lancement de la recuperation du token : ' . $cmd);
 				$result = exec($cmd . ' >> ' . log::getPathToLog('daikinRCCloud_token') . ' 2>&1 &');
 				if (strpos(strtolower($result), 'error') !== FALSE || strpos(strtolower($result), 'traceback') !== FALSE) {

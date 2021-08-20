@@ -135,7 +135,7 @@ class daikinRCCloud extends eqLogic {
 		log::add('daikinRCCloud', 'info', 'Lancement du deamon');
 
 		$sensor_path = realpath(dirname(__FILE__) . '/../../resources');
-		$cmd = 'nice -n 19 node ' . $sensor_path . '/daikinRCCloud.js';
+		$cmd = 'nice -n 19 node ' . $sensor_path . '/daikinRCCloud.js "'.network::getNetworkAccess('internal').'" "'.jeedom::getApiKey('daikinRCCloud').'"';
 		log::add('daikinRCCloud', 'debug', 'Lancement démon daikinRCCloud : ' . $cmd);
 		$result = exec('NODE_ENV=production nohup ' . $cmd . ' >> ' . log::getPathToLog('daikinRCCloud_node') . ' 2>&1 &');
 		if (strpos(strtolower($result), 'error') !== FALSE || strpos(strtolower($result), 'traceback') !== FALSE) {
@@ -161,7 +161,7 @@ class daikinRCCloud extends eqLogic {
 	public static function deamon_stop()
 	{
 		log::add('daikinRCCloud', 'info', 'Arrêt du service daikinRCCloud');
-		@file_get_contents("http://" . config::byKey('internalAddr') . ":3466/stop");
+		@file_get_contents("http://" . config::byKey('internalAddr') . ":8890/stop");
 		sleep(3);
 		if (shell_exec('ps aux | grep "resources/daikinRCCloud.js" | grep -v "grep" | wc -l') == '1') {
 			exec('sudo kill $(ps aux | grep "resources/daikinRCCloud.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');

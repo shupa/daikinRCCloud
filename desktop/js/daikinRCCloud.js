@@ -88,3 +88,7 @@ function addCmdToTable(_cmd) {
      }
    });
  }
+
+$('#bt_showDaikinConfig').off('click').on('click', function () {
+    $('#md_modal').dialog({title: "{{Configuration du module}}"}).load('index.php?v=d&plugin=daikinRCCloud&modal=module&logicalId='+$('.eqLogicAttr[data-l1key=logicalId]').value()).dialog('open');
+});

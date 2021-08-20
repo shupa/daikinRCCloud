@@ -27,13 +27,15 @@ async function main() {
         proxyPort: 9008,              // required: use this port for the proxy and point your client device to this port
         proxyWebPort: 9009,           // required: use this port for the proxy web interface to get the certificate and start Link for login
         proxyListenBind: '0.0.0.0',   // optional: set this to bind the proxy to a special IP, default is '0.0.0.0'
-        proxyDataDir: process.cwd()   // Directory to store certificates and other proxy relevant data to
+        proxyDataDir: process.argv[2]   // Directory to store certificates and other proxy relevant data to
     };
+
+    console.log(process.argv[2])
 
     let tokenSet;
 
     // Set outputfile for tokenset.json
-    const tokenFile = path.join(process.cwd(), 'tokenset.json');
+    const tokenFile = path.join(process.argv[2], 'tokenset.json');
     options.logger('Writing tokenset to: ' + tokenFile);
 
     // Initialize Daikin Cloud Instance
@@ -45,7 +47,7 @@ async function main() {
         fs.writeFileSync(tokenFile, JSON.stringify(tokenSet));
     });
 
-    let args = process.argv.slice(2);
+    let args = process.argv.slice(3);
     if (args.length === 2 && args[0].includes('@')) {
         console.log(`Using provided Login credentials (${args[0]}/${args[1]}) for a direct Login`)
         const resultTokenSet = await daikinCloud.login(args[0], args[1]);

@@ -18,6 +18,7 @@
 
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
+require_once dirname(__FILE__) . '/../../core/php/daikinRCCloud.inc.php';
 
 class daikinRCCloud extends eqLogic {
     /*     * *************************Attributs****************************** */

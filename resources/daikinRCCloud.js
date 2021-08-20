@@ -5,7 +5,7 @@ const {getAllDevices, getDevices, setData} = require('./lib/daikinAPI')
 /* Configuration */
 const config = {
     logger: logLevel,
-    listeningPort: 3499
+    listeningPort: 8890
 };
 let lastStart = 0;
 
@@ -47,8 +47,6 @@ app.get('/setdata/:devicesID', async (req, res) => {
 
     return res.send(await setData(req.params.devicesID, req.query.managementPoint, req.query.dataPoint, req.query.dataPointPath,req.query.dataValue));
 });
-
-
 
 startServer();
 

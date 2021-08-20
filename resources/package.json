@@ -9,7 +9,8 @@
   "author": "Mikol et Thibaut Trarbach",
   "license": "ISC",
   "dependencies": {
-    "daikin-controller-cloud": "^0.2.0",
-    "express": "^4.17.1"
+    "daikin-controller-cloud": "0.2.0",
+    "express": "4.17.1",
+    "node-fetch": "2.6.1"
   }
 }

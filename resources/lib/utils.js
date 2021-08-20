@@ -1,27 +1,34 @@
+const fetch = require('node-fetch');
 
-function logLevel(text, level = '') {
+let IPJeedom;
+let APIKey;
+
+function setUtilsData(jeedomIP, key) {
+    IPJeedom = jeedomIP;
+    APIKey = key;
+}
+
+function logLevel(text, level = 'debug') {
     try {
-        let niveauLevel;
-        switch (level) {
-            case "ERROR":
-                niveauLevel = 400;
-                break;
-            case "WARNING":
-                niveauLevel = 300;
-                break;
-            case "INFO":
-                niveauLevel = 200;
-                break;
-            case "DEBUG":
-                niveauLevel = 100;
-                break;
-            default:
-                niveauLevel = 400; //pour trouver ce qui n'a pas été affecté à un niveau
-                break;
-        }
+        sendToJeedom("log", {level: level, text: text})
     } catch (e) {
+        sendToJeedom("log", {level: "error", text: text})
         console.log(arguments[0]);
     }
 }
 
-module.exports = logLevel;
+function sendToJeedom(Action, Data) {
+    let url = IPJeedom + "/plugins/daikinRCCloud/core/php/jeeDaikinRCCloud.php?apikey=" + APIKey + "&action=" + Action;
+
+    fetch(url, {method: 'post', body: JSON.stringify(Data)})
+        .then(res => {
+            if (!res.ok) {
+                console.log("Erreur lors du contact de votre JeeDom")
+            }
+        })
+}
+module.exports = {
+    logLevel,
+    sendToJeedom,
+    setUtilsData
+};

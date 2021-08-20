@@ -46,6 +46,12 @@ if (!isConnect()) {
 			<a class="btn btn-default" id="bt_generateToken" ><i class="fas fa-cogs"></i> {{Générer le token}}</a>
 		</div>
 	</div>
+      <div class="form-group">
+          <label class="col-sm-4 control-label">{{Générer les équipements}}</label>
+          <div class="col-sm-2">
+              <a class="btn btn-default" id="bt_generateEqLogics" ><i class="fas fa-cogs"></i> {{Générer les équipements}}</a>
+          </div>
+      </div>
   </fieldset>
 </form>
 

@@ -44,7 +44,9 @@ async function getDevices(devicesID) {
             if (device.getId() !== devicesID) {
                 continue;
             }
-            return device.desc;
+            device.cloud = null;
+            device.desc.managementPoints = null;
+            return device;
         }
     } else {
         return false;

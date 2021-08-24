@@ -30,7 +30,6 @@ class daikinRCCloud_deamon
 
     public static function getDevicesByID($_deviceID) {
         log::add('daikinRCCloud', 'debug', 'Recuperation de l\'equipment par un ID');
-
 		return self::request("devices", $_deviceID);
     }
 

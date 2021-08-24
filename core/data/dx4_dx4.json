@@ -1,0 +1,12 @@
+{
+  "gateway" : {
+    "firmwareVersion":[
+      {"name": "Firmware Version", "logicalId": "gatewayFirmwareVersion", "type": "info", "subType": "string", "visible": 0}
+    ],
+    "ledEnabled":[
+      {"name": "Led", "logicalId": "gatewayLedEnabled", "type": "info", "subType": "binary", "visible": 1},
+      {"name": "Led ON", "logicalId": "gatewayLedEnabledOn","type": "action", "subType": "other", "visible": 1, "value": "1", "info": "gatewayLedEnabled"},
+      {"name": "Led OFF", "logicalId": "gatewayLedEnabledOff" ,"type": "action", "subType": "other", "visible": 1,"value": "0", "info": "gatewayLedEnabled"}
+    ]
+  }
+}

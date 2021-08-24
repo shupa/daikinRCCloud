@@ -26,4 +26,5 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
 include_file('core', 'daikinRCCloud_deamon', 'class', 'daikinRCCloud');
 include_file('core', 'daikinRCCloud_data', 'class', 'daikinRCCloud');
+include_file('core', 'daikinRCCloud_generator', 'class', 'daikinRCCloud');
 ?>

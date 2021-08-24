@@ -30,6 +30,8 @@
 				if (!isset($device['_id'])) continue;
 
 				$id = $device['_id'];
+				$type = $device['type'];
+				$deviceModel = $device['deviceModel'];
 				$name = $device['managementPoints'][0]['serialNumber']['value'];
 
 
@@ -39,6 +41,9 @@
 					$eqLogic->setName($name);
 					$eqLogic->setLogicalId($id);
 					$eqLogic->setEqType_name("daikinRCCloud");
+					$eqLogic->setConfiguration('deviceID', $id);
+					$eqLogic->setConfiguration('deviceType', $type);
+					$eqLogic->setConfiguration('devicesModel', $deviceModel);
 					$eqLogic->setIsEnable(1);
 					$eqLogic->setIsVisible(0);
 					$eqLogic->save();

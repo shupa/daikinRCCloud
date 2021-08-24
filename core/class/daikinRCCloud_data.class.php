@@ -51,4 +51,26 @@
 			}
 		}
 
+		public static function updateCMDInfo($_eqLogic) {
+			$deviceID = $_eqLogic->getConfiguration('deviceID', false);
+			$cmds = $_eqLogic->getCmd('info');
+
+			$data = daikinRCCloud_deamon::getDevicesByID($deviceID);
+
+			foreach ($cmds as $cmd) {
+				$_managementPoint = $cmd->getConfiguration("managementPoint",NULL);
+				$_dataPoint = $cmd->getConfiguration("dataPoint",NULL);
+				$_dataPointPath = $cmd->getConfiguration("dataPointPath",NULL);
+
+				if (is_null($_managementPoint) || is_null($_dataPoint)) continue;
+
+				if (is_null($_dataPointPath)) {
+					if (!isset($data['managementPoints'][$_managementPoint][$_dataPoint])) continue;
+					$pointData = $data['managementPoints'][$_managementPoint][$_dataPoint];
+
+					$cmd->event($pointData['value']);
+				}
+			}
+		}
+
 	}

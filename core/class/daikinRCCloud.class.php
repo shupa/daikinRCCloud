@@ -38,10 +38,14 @@ class daikinRCCloud extends eqLogic {
      */
 
     /*
-     * Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
+     * Fonction exécutée automatiquement toutes les 5 minutes par Jeedom*/
       public static function cron5() {
+		  $eqLogics = eqLogic::byType('daikinRCCloud');
+		  foreach ($eqLogics as $eqLogic) {
+			  daikinRCCloud_data::updateCMDInfo($eqLogic);
+		  }
       }
-     */
+
 
     /*
      * Fonction exécutée automatiquement toutes les 10 minutes par Jeedom

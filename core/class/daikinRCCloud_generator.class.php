@@ -69,6 +69,10 @@
 							$daikinRCCloudCmd->setEqLogic_id($_eqLogic->getId());
 							$daikinRCCloudCmd->setLogicalId($cmd['logicalId']);
 
+							$daikinRCCloudCmd->setConfiguration("managementPoint",$_managementPoint);
+							$daikinRCCloudCmd->setConfiguration("dataPoint",$_dataPoint);
+							if (!is_null($_dataPointPath)) $daikinRCCloudCmd->setConfiguration("dataPointPath",$_dataPointPath);
+
 							if (isset($cmd['info'])) {
 								$value = $_eqLogic->getCmd('info', $cmd['info']);
 								if (is_object($value)) {

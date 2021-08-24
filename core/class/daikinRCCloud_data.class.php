@@ -69,6 +69,11 @@
 					$pointData = $data['managementPoints'][$_managementPoint][$_dataPoint];
 
 					$cmd->event($pointData['value']);
+				} else {
+					if (!isset($data['managementPoints'][$_managementPoint][$_dataPoint][$_dataPointPath])) continue;
+					$pointData = $data['managementPoints'][$_managementPoint][$_dataPoint][$_dataPointPath];
+
+					$cmd->event($pointData['value']);
 				}
 			}
 		}

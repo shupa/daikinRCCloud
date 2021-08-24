@@ -51,7 +51,7 @@ class daikinRCCloud_deamon
     {
         $deamon = daikinRCCloud::deamon_info();
         if ($deamon['state'] == 'ok') {
-            log::add('daikinRCCloud', 'debug', 'Nouvelle demande au Deamon | EndPoint : ' . $_endPoint . ' | Params : ' . $_params . ' | Device : ' . $_devicesID);
+            log::add('daikinRCCloud', 'debug', 'Nouvelle demande au Deamon | EndPoint : ' . $_endPoint . '  | Device : ' . $_devicesID);
             /*** Creation de l'url pour la demand du demon ***/
             $url = "http://" . config::byKey('internalAddr') . ":8890/".$_endPoint;
 			if ($_devicesID != null) $url .= "/".$_devicesID;

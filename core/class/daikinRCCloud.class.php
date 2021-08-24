@@ -32,20 +32,21 @@ class daikinRCCloud extends eqLogic {
     /*     * ***********************Methode static*************************** */
 
     /*
-     * Fonction exécutée automatiquement toutes les minutes par Jeedom
+     * Fonction exécutée automatiquement toutes les minutes par Jeedom*/
       public static function cron() {
-      }
-     */
-
-    /*
-     * Fonction exécutée automatiquement toutes les 5 minutes par Jeedom*/
-      public static function cron5() {
 		  $eqLogics = eqLogic::byType('daikinRCCloud');
 		  foreach ($eqLogics as $eqLogic) {
 			  daikinRCCloud_data::updateCMDInfo($eqLogic);
 		  }
       }
 
+
+    /*
+     * Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
+      public static function cron5() {
+
+      }
+*/
 
     /*
      * Fonction exécutée automatiquement toutes les 10 minutes par Jeedom
@@ -72,10 +73,11 @@ class daikinRCCloud extends eqLogic {
      */
 
 	/*
-	 * Fonction exécutée automatiquement tous les jours par Jeedom
+	 * Fonction exécutée automatiquement tous les jours par Jeedom */
 	  public static function cronDaily() {
+	  	daikinRCCloud_data::retrieveDevices();
 	  }
-	 */
+
 
 
 	/*     * *********************Méthodes d'instance************************* */
@@ -211,7 +213,7 @@ class daikinRCCloud extends eqLogic {
 
  // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement 
     public function postSave() {
-        
+        daikinRCCloud_generator::updateCMD($this);
     }
 
  // Fonction exécutée automatiquement avant la suppression de l'équipement 
@@ -274,6 +276,9 @@ class daikinRCCloudCmd extends cmd {
 			$dataPoint = $this->getConfiguration("dataPoint",NULL);
 			$dataValue = $this->getConfiguration("value",NULL);
 
+			if (isset($_options['select'])) $dataValue = $_options['select'];
+			if (isset($_options['slider'])) $dataValue = $_options['slider'];
+
 			$eqLogics = $this->getEqLogic();
 			$deviceID = $eqLogics->getConfiguration('deviceID', false);
 			$params = array(
@@ -284,6 +289,9 @@ class daikinRCCloudCmd extends cmd {
 			if (!is_null($dataPointPath)) $params['dataPointPath'] = $dataPointPath;
 
 			daikinRCCloud_deamon::executeAction($deviceID, $params);
+
+			sleep(1);
+
 			daikinRCCloud_data::updateCMDInfo($eqLogics);
 		}
      }

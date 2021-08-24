@@ -30,18 +30,32 @@ class daikinRCCloud_deamon
 
     public static function getDevicesByID($_deviceID) {
         log::add('daikinRCCloud', 'debug', 'Recuperation de l\'equipment par un ID');
-
 		return self::request("devices", $_deviceID);
     }
+
+    public static function executeAction($_deviceID, $datas) {
+		log::add('daikinRCCloud', 'debug', 'Envoi de l\'action au deamon');
+
+		$params = "?";
+
+		foreach ($datas as $key => $data) {
+			$data = urlencode($data);
+			$params.=$key."=".$data."&";
+		}
+		$params = substr_replace($params ,"", -1);
+
+		return self::request("setdata", $_deviceID, $params);
+	}
 
     private static function request($_endPoint, $_devicesID = null, $_params = null)
     {
         $deamon = daikinRCCloud::deamon_info();
         if ($deamon['state'] == 'ok') {
-            log::add('daikinRCCloud', 'debug', 'Nouvelle demande au Deamon | EndPoint : ' . $_endPoint . ' | Params : ' . $_params . ' | Device : ' . $_devicesID);
+            log::add('daikinRCCloud', 'debug', 'Nouvelle demande au Deamon | EndPoint : ' . $_endPoint . '  | Device : ' . $_devicesID);
             /*** Creation de l'url pour la demand du demon ***/
             $url = "http://" . config::byKey('internalAddr') . ":8890/".$_endPoint;
 			if ($_devicesID != null) $url .= "/".$_devicesID;
+			if ($_params != NULL)  $url.= $_params;
 			log::add('daikinRCCloud', 'debug', 'Url de la demande : ' . $url);
 			/*** Creation de la request HTTP ***/
             $request_http = new com_http($url);

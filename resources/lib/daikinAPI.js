@@ -44,7 +44,9 @@ async function getDevices(devicesID) {
             if (device.getId() !== devicesID) {
                 continue;
             }
-            return device.desc;
+            device.cloud = null;
+            device.desc.managementPoints = null;
+            return device;
         }
     } else {
         return false;
@@ -59,18 +61,26 @@ async function setData(devicesID, managementPoint, dataPoint, dataPointPath, dat
                 continue;
             }
 
-            await device.setData('climateControl', 'onOffMode', 'on');
+            //await device.setData('climateControl', 'onOffMode', 'on');
             //await device.setData('climateControl', 'temperatureControl', '/operationModes/cooling/setpoints/roomTemperature', 20);
 
-            let oldValue = device.getData(managementPoint, dataPoint, dataPointPath).value;
+            if (!dataPointPath) {
+                let oldValue = device.getData(managementPoint, dataPoint).value;
+                dataValue = convertValue(dataValue, typeof oldValue)
 
-            dataValue = convertValue(dataValue, typeof oldValue)
+                await device.setData(managementPoint, dataPoint, dataValue);
+            } else {
+                let oldValue = device.getData(managementPoint, dataPoint, dataPointPath, dataValue).value;
+                dataValue = convertValue(dataValue, typeof oldValue)
 
-            await device.setData(managementPoint, dataPoint, dataPointPath, dataValue);
+                await device.setData(managementPoint, dataPoint, dataPointPath, dataValue);
+            }
 
             await device.updateData();
 
-            return device.desc;
+            device.cloud = null;
+            device.desc.managementPoints = null;
+            return device;
         }
     } else {
         return false;
@@ -85,6 +95,9 @@ function convertValue(value, typeOfValue) {
     switch (typeOfValue) {
         case 'number':
             value = Number(value);
+            break;
+        case 'boolean':
+            value = Boolean(value)
             break;
         default:
     }

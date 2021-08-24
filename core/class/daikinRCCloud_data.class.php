@@ -30,6 +30,8 @@
 				if (!isset($device['_id'])) continue;
 
 				$id = $device['_id'];
+				$type = $device['type'];
+				$deviceModel = $device['deviceModel'];
 				$name = $device['managementPoints'][0]['serialNumber']['value'];
 
 
@@ -39,9 +41,39 @@
 					$eqLogic->setName($name);
 					$eqLogic->setLogicalId($id);
 					$eqLogic->setEqType_name("daikinRCCloud");
+					$eqLogic->setConfiguration('deviceID', $id);
+					$eqLogic->setConfiguration('deviceType', $type);
+					$eqLogic->setConfiguration('devicesModel', $deviceModel);
 					$eqLogic->setIsEnable(1);
 					$eqLogic->setIsVisible(0);
 					$eqLogic->save();
+				}
+			}
+		}
+
+		public static function updateCMDInfo($_eqLogic) {
+			$deviceID = $_eqLogic->getConfiguration('deviceID', false);
+			$cmds = $_eqLogic->getCmd('info');
+
+			$data = daikinRCCloud_deamon::getDevicesByID($deviceID);
+
+			foreach ($cmds as $cmd) {
+				$_managementPoint = $cmd->getConfiguration("managementPoint",NULL);
+				$_dataPoint = $cmd->getConfiguration("dataPoint",NULL);
+				$_dataPointPath = $cmd->getConfiguration("dataPointPath",NULL);
+
+				if (is_null($_managementPoint) || is_null($_dataPoint)) continue;
+
+				if (is_null($_dataPointPath)) {
+					if (!isset($data['managementPoints'][$_managementPoint][$_dataPoint])) continue;
+					$pointData = $data['managementPoints'][$_managementPoint][$_dataPoint];
+
+					$cmd->event($pointData['value']);
+				} else {
+					if (!isset($data['managementPoints'][$_managementPoint][$_dataPoint][$_dataPointPath])) continue;
+					$pointData = $data['managementPoints'][$_managementPoint][$_dataPoint][$_dataPointPath];
+
+					$cmd->event($pointData['value']);
 				}
 			}
 		}

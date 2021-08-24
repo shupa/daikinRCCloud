@@ -71,7 +71,7 @@
 
 							$daikinRCCloudCmd->setConfiguration("managementPoint",$_managementPoint);
 							$daikinRCCloudCmd->setConfiguration("dataPoint",$_dataPoint);
-							if (!is_null($_dataPointPath)) $daikinRCCloudCmd->setConfiguration("dataPointPath",$_dataPointPath);
+							if (!is_null($cmd['value'])) $daikinRCCloudCmd->setConfiguration("value",$cmd['value']);
 
 							if (isset($cmd['info'])) {
 								$value = $_eqLogic->getCmd('info', $cmd['info']);

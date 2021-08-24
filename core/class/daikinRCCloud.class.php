@@ -268,7 +268,24 @@ class daikinRCCloudCmd extends cmd {
 
   // Exécution d'une commande  
      public function execute($_options = array()) {
-        
+     	if ($this->getType() == "action") {
+			$managementPoint = $this->getConfiguration("managementPoint",NULL);
+			$dataPointPath = $this->getConfiguration("dataPointPath",NULL);
+			$dataPoint = $this->getConfiguration("dataPoint",NULL);
+			$dataValue = $this->getConfiguration("value",NULL);
+
+			$eqLogics = $this->getEqLogic();
+			$deviceID = $eqLogics->getConfiguration('deviceID', false);
+			$params = array(
+				"managementPoint" =>$managementPoint,
+				"dataPoint" =>$dataPoint,
+				"dataValue" =>$dataValue,
+			);
+			if (!is_null($dataPointPath)) $params['dataPointPath'] = $dataPointPath;
+
+			daikinRCCloud_deamon::executeAction($deviceID, $params);
+			daikinRCCloud_data::updateCMDInfo($eqLogics);
+		}
      }
 
     /*     * **********************Getteur Setteur*************************** */

@@ -4,9 +4,14 @@
       {"name": "Firmware Version", "logicalId": "gatewayFirmwareVersion", "type": "info", "subType": "string", "visible": 0}
     ],
     "ledEnabled":[
-      {"name": "Led", "logicalId": "gatewayLedEnabled", "type": "info", "subType": "binary", "visible": 1},
-      {"name": "Led ON", "logicalId": "gatewayLedEnabledOn","type": "action", "subType": "other", "visible": 1, "value": "1", "info": "gatewayLedEnabled"},
-      {"name": "Led OFF", "logicalId": "gatewayLedEnabledOff" ,"type": "action", "subType": "other", "visible": 1,"value": "0", "info": "gatewayLedEnabled"}
+      {"name": "Led", "logicalId": "gatewayLedEnabled", "type": "info", "subType": "binary", "visible": 0}
+    ]
+  },
+  "climateControl" : {
+    "onOffMode": [
+      {"name": "Status", "logicalId": "climateControlOnOffMode", "type": "info", "subType": "binary", "visible": 1},
+      {"name": "On", "logicalId": "climateControlOnOffModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlOnOffMode"},
+      {"name": "Off", "logicalId": "climateControlOnOffModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlOnOffMode"}
     ]
   }
 }

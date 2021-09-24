@@ -54,6 +54,16 @@ app.get('/setdata/:devicesID', async (req, res) => {
     return res.send(await setData(req.params.devicesID, req.query.managementPoint, req.query.dataPoint, req.query.dataPointPath,req.query.dataValue));
 });
 
+app.get('/setdatas/:devicesID', async (req, res) => {
+
+    config.logger(req.query)
+    let data = req.query.data;
+    let devicesID = req.params.devicesID;
+
+    let result = await setData(devicesID, data);
+    return res.send(result);
+});
+
 /*** Start server web ***/
 startServer();
 

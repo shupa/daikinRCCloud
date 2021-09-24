@@ -275,6 +275,9 @@ class daikinRCCloudCmd extends cmd {
 			$dataPointPath = $this->getConfiguration("dataPointPath",NULL);
 			$dataPoint = $this->getConfiguration("dataPoint",NULL);
 			$dataValue = $this->getConfiguration("value",NULL);
+			$dataPointPathMutable = $this->getConfiguration("dataPointPathMutable",NULL);
+			$isCommunData = $this->getConfiguration("isCommunData",0);
+			$modes = $this->getConfiguration("mode",false);
 
 			if (isset($_options['select'])) $dataValue = $_options['select'];
 			if (isset($_options['slider'])) $dataValue = $_options['slider'];
@@ -288,9 +291,20 @@ class daikinRCCloudCmd extends cmd {
 			);
 			if (!is_null($dataPointPath)) $params['dataPointPath'] = $dataPointPath;
 
-			daikinRCCloud_deamon::executeAction($deviceID, $params);
+			if ($isCommunData == 1) {
+                $data = array();
+                foreach ($modes as $mode) {
+                    $tempsParams = $params;
+                    $tempsParams['dataPointPath'] = str_replace("#mode#",$mode,$dataPointPathMutable);
+                    $data[] = json_encode($tempsParams);
+                }
+                daikinRCCloud_deamon::executeActions($deviceID, $data);
+            } else {
+                if (!is_null($dataPointPath)) $params['dataPointPath'] = $dataPointPath;
+                daikinRCCloud_deamon::executeAction($deviceID, $params);
+            }
 
-			sleep(1);
+            sleep(1);
 
 			daikinRCCloud_data::updateCMDInfo($eqLogics);
 		}

@@ -35,18 +35,25 @@
 			/*** Recuperation des data de l'équipement ***/
 			$data = daikinRCCloud_deamon::getDevicesByID($deviceID);
 
+			/*** Verification que l'on a bien toute les data ***/
 			if (!isset($data['managementPoints'])) return FALSE;
 			if (!is_array($data['managementPoints'])) return FALSE;
 
+			/*** Analyse de tout les Management Points de l'api ***/
 			foreach ($data['managementPoints'] as $MPName => $managementPoint) {
 				if (!is_array($managementPoint)) continue;
-				foreach ($managementPoint as $DTName => $dataPoint) {
+				/*** Analyse de tout les Datapoint de chaque Management Points ***/
+                foreach ($managementPoint as $DTName => $dataPoint) {
 					if (!is_array($dataPoint)) continue;
+					/*** Verification de si il y a un DataPointPatch ***/
 					if (isset($dataPoint['settable'])) {
+					    /*** Creation de la commande avec les information ***/
 						self::createCMD($_eqLogic, $dataPoint, $MPName, $DTName);
 					} else {
+					    /*** Verification de tout les Data Point Patch de ce Data Point ***/
 						foreach ($dataPoint as $DPHName => $dataPointPath) {
 							if (isset($dataPointPath['settable'])) {
+                                /*** Creation de la commande avec les information récupére ***/
 								self::createCMD($_eqLogic, $dataPointPath, $MPName, $DTName, $DPHName);
 							}
 						}
@@ -62,9 +69,15 @@
 
 			$def = self::getFile($deviceType, $devicesModel);
 			$cmdData = NULL;
+			$isCommunData = 0;
+			$dataPatchEdit = "";
 
 
 			if (!is_null($_dataPointPath)) {
+			    $pointPatchData = self::getSpecDataPatch($_dataPointPath);
+			    $isCommunData = $pointPatchData['commun'];
+                $dataPatchEdit = $pointPatchData['dataPatchEdit'];
+			    $_dataPointPath = $pointPatchData['dataPatch'];
 				if (isset($def[$_managementPoint][$_dataPoint][$_dataPointPath])) $cmdData = $def[$_managementPoint][$_dataPoint][$_dataPointPath];
 			} else {
 				if (isset($def[$_managementPoint][$_dataPoint])) $cmdData = $def[$_managementPoint][$_dataPoint];
@@ -111,9 +124,56 @@
 				if (isset($data['minValue'])) $daikinRCCloudCmd->setConfiguration("minValue", $data['minValue']);
 				if (isset($data['maxValue'])) $daikinRCCloudCmd->setConfiguration("maxValue", $data['maxValue']);
 
+				if ($isCommunData) {
+                    $daikinRCCloudCmd->setConfiguration("dataPointPathMutable", $dataPatchEdit);
+                    $daikinRCCloudCmd->setConfiguration("isCommunData", $isCommunData);
+                    $daikinRCCloudCmd->setConfiguration("mode", array("heating", "cooling", "auto", "dry"));
+                }
+
 				$daikinRCCloudCmd->save();
 
 				$daikinRCCloudCmd->event($data['value']);
 			}
 		}
+
+		private static function getSpecDataPatch($dataPatch) {
+		    $result = array("dataPatch"=>"", "commun"=>0, "dataPatchEdit"=>"");
+		    switch ($dataPatch) {
+                case "/operationModes/cooling/fanSpeed/currentMode":
+                case "/operationModes/heating/fanSpeed/currentMode":
+                case "/operationModes/auto/fanSpeed/currentMode":
+                case "/operationModes/dry/fanSpeed/currentMode":
+                    $result["dataPatch"] = "/operationModes/cooling/fanSpeed/currentMode";
+                    $result["dataPatchEdit"] = "/operationModes/#mode#/fanSpeed/currentMode";
+                    $result["commun"] = 1;
+                    break;
+                case "/operationModes/cooling/fanSpeed/modes/fixed":
+                case "/operationModes/heating/fanSpeed/modes/fixed":
+                case "/operationModes/auto/fanSpeed/modes/fixed":
+                case "/operationModes/dry/fanSpeed/modes/fixed":
+                    $result["dataPatch"] = "/operationModes/cooling/fanSpeed/modes/fixed";
+                $result["dataPatchEdit"] = "/operationModes/#mode#/fanSpeed/modes/fixed";
+                $result["commun"] = 1;
+                    break;
+                case "/operationModes/cooling/fanDirection/horizontal/currentMode":
+                case "/operationModes/heating/fanDirection/horizontal/currentMode":
+                case "/operationModes/auto/fanDirection/horizontal/currentMode":
+                case "/operationModes/dry/fanDirection/horizontal/currentMode":
+                     $result["dataPatch"] = "/operationModes/cooling/fanDirection/horizontal/currentMode";
+                $result["dataPatchEdit"] = "/operationModes/#mode#/fanDirection/horizontal/currentMode";
+                $result["commun"] = 1;
+                    break;
+                case "/operationModes/cooling/fanDirection/vertical/currentMode":
+                case "/operationModes/heating/fanDirection/vertical/currentMode":
+                case "/operationModes/auto/fanDirection/vertical/currentMode":
+                case "/operationModes/dry/fanDirection/vertical/currentMode":
+                    $result["dataPatch"] = "/operationModes/cooling/fanDirection/vertical/currentMode";
+                $result["dataPatchEdit"] = "/operationModes/#mode#/fanDirection/vertical/currentMode";
+                $result["commun"] = 1;
+                    break;
+                default:
+                    $result["dataPatch"] = $dataPatch;
+            }
+            return $result;
+        }
 	}

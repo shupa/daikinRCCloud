@@ -88,6 +88,45 @@ async function setData(devicesID, managementPoint, dataPoint, dataPointPath, dat
 
 }
 
+async function setDatas(devicesID, data) {
+    const devices = await daikinCloud.getCloudDevices();
+    if (devices && devices.length) {
+        for (let device of devices) {
+            if (device.getId() !== devicesID) {
+                continue;
+            }
+
+            for (const cmd of data) {
+                let managementPoint = cmd.managementPoint;
+                let dataPoint = cmd.dataPoint;
+                let dataPointPath = cmd.dataPointPath;
+                let dataValue = cmd.dataValue;s
+
+                if (!dataPointPath) {
+                    let oldValue = device.getData(managementPoint, dataPoint).value;
+                    dataValue = convertValue(dataValue, typeof oldValue)
+
+                    await device.setData(managementPoint, dataPoint, dataValue);
+                } else {
+                    let oldValue = device.getData(managementPoint, dataPoint, dataPointPath, dataValue).value;
+                    dataValue = convertValue(dataValue, typeof oldValue)
+
+                    await device.setData(managementPoint, dataPoint, dataPointPath, dataValue);
+                }
+            }
+
+            await device.updateData();
+
+            device.cloud = null;
+            device.desc.managementPoints = null;
+            return device;
+        }
+    } else {
+        return false;
+    }
+
+}
+
 function convertValue(value, typeOfValue) {
 
     console.log(typeOfValue);

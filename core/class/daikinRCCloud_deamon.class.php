@@ -47,6 +47,20 @@ class daikinRCCloud_deamon
 		return self::request("setdata", $_deviceID, $params);
 	}
 
+    public static function executeActions($_deviceID, $datas) {
+        log::add('daikinRCCloud', 'debug', 'Envoi de l\'action au deamon');
+
+        $params = "?";
+
+        foreach ($datas as $key => $data) {
+            $data = urlencode($data);
+            $params.=$key."=".$data."&";
+        }
+        $params = substr_replace($params ,"", -1);
+
+        return self::request("setdatas", $_deviceID, $params);
+    }
+
     private static function request($_endPoint, $_devicesID = null, $_params = null)
     {
         $deamon = daikinRCCloud::deamon_info();
@@ -65,7 +79,10 @@ class daikinRCCloud_deamon
             /*** Execution de la request ***/
             $result = $request_http->exec(6, 3);//Time out à 3s 3 essais
             /*** Verification de la request ***/
-            if (!$result) return "No Data";
+            if (!$result) {
+                log::add('daikinRCCloud', 'debug', 'Pas de Data');
+                return "No Data";
+            }
 
             /*** Format de la response ***/
             log::add('daikinRCCloud', 'debug', 'Result de la demand : ' . $result);

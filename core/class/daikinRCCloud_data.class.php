@@ -32,7 +32,11 @@
 				$id = $device['_id'];
 				$type = $device['type'];
 				$deviceModel = $device['deviceModel'];
-				$name = $device['managementPoints'][0]['serialNumber']['value'];
+				if (!isset($device['managementPoints'][0]['serialNumber']['value'])) {
+					$name = $id;
+				} else {
+					$name = $device['managementPoints'][0]['serialNumber']['value'];
+				}
 
 
 				$eqLogic = eqLogic::byLogicalId($id, 'daikinRCCloud');

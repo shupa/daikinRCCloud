@@ -39,7 +39,19 @@
 					log::add('daikinRCCloud', 'error', $result);
 					return FALSE;
 				}
-			}
+			} else {
+                log::add('daikinRCCloud_token', 'info', 'Récupération d\'un token de connexion');
+
+                $cmd = 'rm ' . $sensor_path . '/tokensaver.js "';
+                $result = exec($cmd . ' >> ' . log::getPathToLog('daikinRCCloud_token') . ' 2>&1 &');
+                $cmd = 'node ' . $sensor_path . '/tokensaver.js "'.$sensor_path.'" "' . config::byKey('login', 'daikinRCCloud') . '" "' . config::byKey('password', 'daikinRCCloud').'"';
+                log::add('daikinRCCloud_token', 'debug', 'Lancement de la recuperation du token : ' . $cmd);
+                $result = exec($cmd . ' >> ' . log::getPathToLog('daikinRCCloud_token') . ' 2>&1 &');
+                if (strpos(strtolower($result), 'error') !== FALSE || strpos(strtolower($result), 'traceback') !== FALSE) {
+                    log::add('daikinRCCloud', 'error', $result);
+                    return FALSE;
+                }
+            }
 			log::add('daikinRCCloud', 'info', 'Fin de la regen du token');
 			ajax::success();
 		}

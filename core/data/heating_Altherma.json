@@ -1,0 +1,117 @@
+{
+  "gateway" : {
+    "firmwareVersion":[
+      {"name": "Firmware Version", "logicalId": "gatewayFirmwareVersion", "type": "info", "subType": "string", "visible": 0, "historized": 0}
+    ],
+    "ledEnabled":[
+      {"name": "Led", "logicalId": "gatewayLedEnabled", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
+    ]
+  },
+  "climateControl" : {
+    "onOffMode": [
+      {"name": "Status", "logicalId": "climateControlOnOffMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
+      {"name": "On", "logicalId": "climateControlOnOffModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlOnOffMode", "widget": "core::binarySwitch"},
+      {"name": "Off", "logicalId": "climateControlOnOffModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlOnOffMode", "widget": "core::binarySwitch"}
+    ],
+    "name": [
+      {"name": "Nom", "logicalId": "climateControlName", "type": "info", "subType": "string", "visible": 1, "historized": 0}
+    ],
+    "isHolidayModeActive": [
+      {"name": "Mode Vacance", "logicalId": "climateControlIsHolidayMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
+    ],
+    "isInErrorState": [
+      {"name": "Erreur", "logicalId": "climateControlIsInErrorState", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
+    ],
+    "isInModeConflict": [
+      {"name": "Conflict", "logicalId": "climateControlIsInModeConflict", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
+    ],
+    "isInCautionState": [
+      {"name": "Avertissement", "logicalId": "climateControlIsInCautionState", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
+    ],
+    "operationMode":  [
+      {"name": "Mode Opération", "logicalId": "climateControlOperationMode", "type": "info", "subType": "string", "visible": 0, "historized": 0},
+      {"name": "Mode Opérations", "logicalId": "climateControlOperationModeSelect", "type": "action", "subType": "select", "visible": 1, "info": "climateControlOperationMode", "possibleValue": {
+        "fanOnly": "Ventilateur",
+        "heating": "Chauffage",
+        "cooling": "Clim",
+        "auto": "Auto",
+        "dry": "Déshumidificateur"
+        }
+      }
+    ],
+    "temperatureControl": {
+        "/operationModes/heating/setpoints/roomTemperature": [
+          {"name": "Consigne Chauffage info", "logicalId": "climateControlTemperatureControlHeating", "type": "info", "subType": "numeric", "visible": 0, "unite": "°C", "historized": 0},
+          {"name": "Consigne Chauffage", "logicalId": "climateControlTemperatureControlHeatingSlider", "type": "action", "subType": "slider", "visible": 1, "info": "climateControlTemperatureControlHeating"}
+        ],
+      "/operationModes/cooling/setpoints/roomTemperature": [
+        {"name": "Consigne Clim info", "logicalId": "climateControlTemperatureControlCooling", "type": "info", "subType": "numeric", "visible": 0, "unite": "°C", "historized": 0},
+        {"name": "Consigne Clim", "logicalId": "climateControlTemperatureControlCoolingSlider", "type": "action", "subType": "slider", "visible": 1, "info": "climateControlTemperatureControlCooling"}
+      ],
+      "/operationModes/auto/setpoints/roomTemperature": [
+        {"name": "Consigne Auto info", "logicalId": "climateControlTemperatureControlAuto", "type": "info", "subType": "numeric", "visible": 0, "unite": "°C", "historized": 0},
+        {"name": "Consigne Auto", "logicalId": "climateControlTemperatureControlAutoSlider", "type": "action", "subType": "slider", "visible": 1, "info": "climateControlTemperatureControlAuto"}
+      ]
+    },
+    "sensoryData": {
+      "/roomTemperature": [
+        {"name": "Température", "logicalId": "climateControlSensoryDataRoom", "type": "info", "subType": "numeric", "visible": 1,"widget": "core::tile", "unite": "°C", "historized": 1}
+      ],
+      "/outdoorTemperature": [
+        {"name": "Température Extérieur", "logicalId": "climateControlSensoryDataRoomExt", "type": "info", "subType": "numeric", "visible": 1,"widget": "core::tile", "unite": "°C", "historized": 1}
+      ]
+    },
+    "fanControl": {
+      "/operationModes/cooling/fanSpeed/currentMode": [
+        {"name": "Mode Fan Value", "logicalId": "climateControlFanControl", "type": "info", "subType": "string", "visible": 0, "historized": 0},
+        {"name": "Mode Fan", "logicalId": "climateControlFanControlSelect", "type": "action", "subType": "select", "visible": 1, "info": "climateControlFanControl", "possibleValue": {
+          "quiet": "Silencieux",
+          "auto": "Auto",
+          "fixed": "Fixe"
+        }
+        }
+      ],
+      "/operationModes/cooling/fanSpeed/modes/fixed": [
+        {"name": "Vitesse Fan Info", "logicalId": "climateControlFanControlFixed", "type": "info", "subType": "numeric", "visible": 0, "historized": 0},
+        {"name": "Vitesse Fan", "logicalId": "climateControlFanControlFixedSlider", "type": "action", "subType": "slider", "visible": 1, "info": "climateControlFanControlFixed"}
+      ],
+      "/operationModes/cooling/fanDirection/horizontal/currentMode": [
+        {"name": "Fan Horizontal Info", "logicalId": "climateControlFanControlDirHorFan", "type": "info", "subType": "string", "visible": 0,  "historized": 0},
+        {"name": "Fan Horizontal", "logicalId": "climateControlFanControlDirHorFanSelect", "type": "action", "subType": "select", "visible": 1, "info": "climateControlFanControlDirHorFan", "possibleValue": {
+          "stop": "Arrêter",
+          "swing": "Osciller"
+        }
+        }
+      ],
+      "/operationModes/cooling/fanDirection/vertical/currentMode": [
+        {"name": "Fan Vertical Info", "logicalId": "climateControlFanControlDirVer", "type": "info", "subType": "string", "visible": 0,  "historized": 0},
+        {"name": "Fan Vertical", "logicalId": "climateControlFanControlDirVerSelect", "type": "action", "subType": "select", "visible": 1, "info": "climateControlFanControlDirVer", "possibleValue": {
+          "stop": "Arrêter",
+          "swing": "Osciller",
+          "auto": "Auto"
+        }
+        }
+      ]
+    },
+    "econoMode": [
+      {"name": "Mode Economique", "logicalId": "climateControlEconoMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
+      {"name": "On Economique", "logicalId": "climateControlEconoModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlEconoMode", "widget": "core::binarySwitch"},
+      {"name": "Off Economique", "logicalId": "climateControlEconoModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlEconoMode", "widget": "core::binarySwitch"}
+    ],
+    "comfortMode": [
+      {"name": "Mode Confort", "logicalId": "climateControlConfortMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
+      {"name": "On Confort", "logicalId": "climateControlConfortModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlConfortMode", "widget": "core::binarySwitch"},
+      {"name": "Off Confort", "logicalId": "climateControlConfortModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlConfortMode", "widget": "core::binarySwitch"}
+    ],
+    "powerfulMode": [
+      {"name": "Mode Puissant", "logicalId": "climateControlPowerfulMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
+      {"name": "On Puissant", "logicalId": "climateControlPowerfulModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlPowerfulMode", "widget": "core::binarySwitch"},
+      {"name": "Off Puissant", "logicalId": "climateControlPowerfulModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlPowerfulMode", "widget": "core::binarySwitch"}
+    ],
+    "streamerMode": [
+      {"name": "Mode Streamer", "logicalId": "climateControlStreamerMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
+      {"name": "On Streamer", "logicalId": "climateControlStreamerModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlStreamerMode", "widget": "core::binarySwitch"},
+      {"name": "Off Streamer", "logicalId": "climateControlStreamerModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlStreamerMode", "widget": "core::binarySwitch"}
+    ]
+  }
+}

@@ -176,4 +176,53 @@
             }
             return $result;
         }
+
+
+		/** Va permettre d'avoir des json pré générer par le plugin **/
+		public static function generateJson($_eqLogicID) {
+			$_eqLogic = eqLogic::byLogicalId($_eqLogicID, "daikinRCCloud");
+
+			if (!is_object($_eqLogic)) return FALSE;
+			$result = array();
+
+			$deviceID = $_eqLogic->getConfiguration('deviceID', false);
+			if ($deviceID == FALSE) return False;
+			$data = daikinRCCloud_deamon::getDevicesByID($deviceID);
+
+			if (!isset($data['managementPoints'])) return array("error"=>"On a pas trouver de Point de management");
+			if (!is_array($data['managementPoints'])) return array("error"=>"On a pas trouver de Point de management");
+
+			foreach ($data['managementPoints'] as $managementPointName => $managementPoint) {
+				if (!is_array($managementPoint)) continue;
+				foreach ($managementPoint as $dataPointName => $dataPoint) {
+					if (!is_array($dataPoint)) continue;
+					if (isset($dataPoint['settable'])) {
+
+						$result[$managementPointName][$dataPointName][] = array(
+							"name" => $dataPointName,
+							"logicalId"=> $managementPointName.$dataPointName,
+							"type" => "",
+							"subType"=>"string",
+							"visible"=> 0, "historized"=>0
+						);
+
+					} else {
+						foreach ($dataPoint as $dataPointPathName => $dataPointPath) {
+							if (isset($dataPointPath['settable'])) {
+								$result[$managementPointName][$dataPointName][$dataPointPathName][] = array(
+									"name" => $dataPointName,
+									"logicalId"=> $managementPointName.$dataPointName,
+									"type" => "",
+									"subType"=>"string",
+									"visible"=> 0, "historized"=>0
+								);
+							}
+						}
+					}
+				}
+			}
+
+			return $result;
+		}
+
 	}

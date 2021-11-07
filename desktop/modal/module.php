@@ -17,14 +17,22 @@
 	if (!isConnect('admin')) {
 		throw new Exception('401 Unauthorized');
 	}
-	$devices_data = daikinRCCloud_deamon::getDevicesByID(init('logicalId'));
+
+    $logicalID = init('logicalId');
+
+    $devices_data = daikinRCCloud_deamon::getDevicesByID($logicalID);
+	$devices_prejson = daikinRCCloud_generator::generateJson($logicalID);
 ?>
 <div id='div_nodeDeconzAlert' style="display: none;"></div>
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#rawNodeTab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-list-alt"></i> {{Informations brutes}}</a></li>
+    <li role="presentation" class=""><a href="#rawNodeJsonPregen" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-list-alt"></i> {{Json Pre Gen}}</a></li>
 </ul>
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="rawNodeTab">
         <pre><?php echo json_encode($devices_data,JSON_PRETTY_PRINT);?></pre>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="rawNodeJsonPregen">
+        <pre><?php echo json_encode($devices_prejson);?></pre>
     </div>
 </div>

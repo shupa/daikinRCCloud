@@ -9,12 +9,12 @@ function setUtilsData(jeedomIP, key) {
 }
 
 function logLevel(text, level = 'debug') {
-    try {
+    /*try {
         sendToJeedom("log", {level: level, text: text})
     } catch (e) {
         sendToJeedom("log", {level: "error", text: text})
         console.log(arguments[0]);
-    }
+    }*/
 }
 
 function sendToJeedom(Action, Data) {

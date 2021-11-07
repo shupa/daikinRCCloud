@@ -196,8 +196,10 @@
 				if (!is_array($managementPoint)) continue;
 				foreach ($managementPoint as $dataPointName => $dataPoint) {
 					if (!is_array($dataPoint)) continue;
-					if (isset($dataPoint['settable'])) {
 
+					if (is_numeric($managementPointName)) $managementPointName = "manage".$managementPointName;
+
+					if (isset($dataPoint['settable'])) {
 						$result[$managementPointName][$dataPointName][] = array(
 							"name" => $dataPointName,
 							"logicalId"=> $managementPointName.$dataPointName,
@@ -205,7 +207,6 @@
 							"subType"=>"string",
 							"visible"=> 0, "historized"=>0
 						);
-
 					} else {
 						foreach ($dataPoint as $dataPointPathName => $dataPointPath) {
 							if (isset($dataPointPath['settable'])) {
@@ -214,7 +215,8 @@
 									"logicalId"=> $managementPointName.$dataPointName,
 									"type" => "",
 									"subType"=>"string",
-									"visible"=> 0, "historized"=>0
+									"visible"=> 0,
+									"historized"=>0
 								);
 							}
 						}

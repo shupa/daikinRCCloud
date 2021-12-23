@@ -1,117 +1,654 @@
 {
-  "gateway" : {
-    "firmwareVersion":[
-      {"name": "Firmware Version", "logicalId": "gatewayFirmwareVersion", "type": "info", "subType": "string", "visible": 0, "historized": 0}
-    ],
-    "ledEnabled":[
-      {"name": "Led", "logicalId": "gatewayLedEnabled", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
-    ]
-  },
-  "climateControl" : {
-    "onOffMode": [
-      {"name": "Status", "logicalId": "climateControlOnOffMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
-      {"name": "On", "logicalId": "climateControlOnOffModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlOnOffMode", "widget": "core::binarySwitch"},
-      {"name": "Off", "logicalId": "climateControlOnOffModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlOnOffMode", "widget": "core::binarySwitch"}
-    ],
+  "mp_0": {
     "name": [
-      {"name": "Nom", "logicalId": "climateControlName", "type": "info", "subType": "string", "visible": 1, "historized": 0}
-    ],
-    "isHolidayModeActive": [
-      {"name": "Mode Vacance", "logicalId": "climateControlIsHolidayMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
-    ],
-    "isInErrorState": [
-      {"name": "Erreur", "logicalId": "climateControlIsInErrorState", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
-    ],
-    "isInModeConflict": [
-      {"name": "Conflict", "logicalId": "climateControlIsInModeConflict", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
-    ],
-    "isInCautionState": [
-      {"name": "Avertissement", "logicalId": "climateControlIsInCautionState", "type": "info", "subType": "binary", "visible": 0, "historized": 0}
-    ],
-    "operationMode":  [
-      {"name": "Mode Opération", "logicalId": "climateControlOperationMode", "type": "info", "subType": "string", "visible": 0, "historized": 0},
-      {"name": "Mode Opérations", "logicalId": "climateControlOperationModeSelect", "type": "action", "subType": "select", "visible": 1, "info": "climateControlOperationMode", "possibleValue": {
-        "fanOnly": "Ventilateur",
-        "heating": "Chauffage",
-        "cooling": "Clim",
-        "auto": "Auto",
-        "dry": "Déshumidificateur"
-        }
+      {
+        "name": "name",
+        "logicalId": "mp_0name",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
       }
     ],
-    "temperatureControl": {
-        "/operationModes/heating/setpoints/roomTemperature": [
-          {"name": "Consigne Chauffage info", "logicalId": "climateControlTemperatureControlHeating", "type": "info", "subType": "numeric", "visible": 0, "unite": "°C", "historized": 0},
-          {"name": "Consigne Chauffage", "logicalId": "climateControlTemperatureControlHeatingSlider", "type": "action", "subType": "slider", "visible": 1, "info": "climateControlTemperatureControlHeating"}
-        ],
-      "/operationModes/cooling/setpoints/roomTemperature": [
-        {"name": "Consigne Clim info", "logicalId": "climateControlTemperatureControlCooling", "type": "info", "subType": "numeric", "visible": 0, "unite": "°C", "historized": 0},
-        {"name": "Consigne Clim", "logicalId": "climateControlTemperatureControlCoolingSlider", "type": "action", "subType": "slider", "visible": 1, "info": "climateControlTemperatureControlCooling"}
-      ],
-      "/operationModes/auto/setpoints/roomTemperature": [
-        {"name": "Consigne Auto info", "logicalId": "climateControlTemperatureControlAuto", "type": "info", "subType": "numeric", "visible": 0, "unite": "°C", "historized": 0},
-        {"name": "Consigne Auto", "logicalId": "climateControlTemperatureControlAutoSlider", "type": "action", "subType": "slider", "visible": 1, "info": "climateControlTemperatureControlAuto"}
-      ]
-    },
+    "iconId": [
+      {
+        "name": "iconId",
+        "logicalId": "mp_0iconId",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "firmwareVersion": [
+      {
+        "name": "firmwareVersion",
+        "logicalId": "mp_0firmwareVersion",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "miconId": [
+      {
+        "name": "miconId",
+        "logicalId": "mp_0miconId",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "serialNumber": [
+      {
+        "name": "serialNumber",
+        "logicalId": "mp_0serialNumber",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "modelInfo": [
+      {
+        "name": "modelInfo",
+        "logicalId": "mp_0modelInfo",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "ipAddress": [
+      {
+        "name": "ipAddress",
+        "logicalId": "mp_0ipAddress",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "macAddress": [
+      {
+        "name": "macAddress",
+        "logicalId": "mp_0macAddress",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "errorCode": [
+      {
+        "name": "errorCode",
+        "logicalId": "mp_0errorCode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInErrorState": [
+      {
+        "name": "isInErrorState",
+        "logicalId": "mp_0isInErrorState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ]
+  },
+  "mp_1": {
+    "name": [
+      {
+        "name": "name",
+        "logicalId": "mp_1name",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "iconId": [
+      {
+        "name": "iconId",
+        "logicalId": "mp_1iconId",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "errorCode": [
+      {
+        "name": "errorCode",
+        "logicalId": "mp_1errorCode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isHolidayModeActive": [
+      {
+        "name": "isHolidayModeActive",
+        "logicalId": "mp_1isHolidayModeActive",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInErrorState": [
+      {
+        "name": "isInErrorState",
+        "logicalId": "mp_1isInErrorState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInWarningState": [
+      {
+        "name": "isInWarningState",
+        "logicalId": "mp_1isInWarningState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInInstallerState": [
+      {
+        "name": "isInInstallerState",
+        "logicalId": "mp_1isInInstallerState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInEmergencyState": [
+      {
+        "name": "isInEmergencyState",
+        "logicalId": "mp_1isInEmergencyState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "onOffMode": [
+      {
+        "name": "onOffMode",
+        "logicalId": "mp_1onOffMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "setpointMode": [
+      {
+        "name": "setpointMode",
+        "logicalId": "mp_1setpointMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "controlMode": [
+      {
+        "name": "controlMode",
+        "logicalId": "mp_1controlMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
     "sensoryData": {
       "/roomTemperature": [
-        {"name": "Température", "logicalId": "climateControlSensoryDataRoom", "type": "info", "subType": "numeric", "visible": 1,"widget": "core::tile", "unite": "°C", "historized": 1}
+        {
+          "name": "sensoryData",
+          "logicalId": "mp_1sensoryData",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
       ],
       "/outdoorTemperature": [
-        {"name": "Température Extérieur", "logicalId": "climateControlSensoryDataRoomExt", "type": "info", "subType": "numeric", "visible": 1,"widget": "core::tile", "unite": "°C", "historized": 1}
-      ]
-    },
-    "fanControl": {
-      "/operationModes/cooling/fanSpeed/currentMode": [
-        {"name": "Mode Fan Value", "logicalId": "climateControlFanControl", "type": "info", "subType": "string", "visible": 0, "historized": 0},
-        {"name": "Mode Fan", "logicalId": "climateControlFanControlSelect", "type": "action", "subType": "select", "visible": 1, "info": "climateControlFanControl", "possibleValue": {
-          "quiet": "Silencieux",
-          "auto": "Auto",
-          "fixed": "Fixe"
-        }
+        {
+          "name": "sensoryData",
+          "logicalId": "mp_1sensoryData",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
         }
       ],
-      "/operationModes/cooling/fanSpeed/modes/fixed": [
-        {"name": "Vitesse Fan Info", "logicalId": "climateControlFanControlFixed", "type": "info", "subType": "numeric", "visible": 0, "historized": 0},
-        {"name": "Vitesse Fan", "logicalId": "climateControlFanControlFixedSlider", "type": "action", "subType": "slider", "visible": 1, "info": "climateControlFanControlFixed"}
-      ],
-      "/operationModes/cooling/fanDirection/horizontal/currentMode": [
-        {"name": "Fan Horizontal Info", "logicalId": "climateControlFanControlDirHorFan", "type": "info", "subType": "string", "visible": 0,  "historized": 0},
-        {"name": "Fan Horizontal", "logicalId": "climateControlFanControlDirHorFanSelect", "type": "action", "subType": "select", "visible": 1, "info": "climateControlFanControlDirHorFan", "possibleValue": {
-          "stop": "Arrêter",
-          "swing": "Osciller"
-        }
-        }
-      ],
-      "/operationModes/cooling/fanDirection/vertical/currentMode": [
-        {"name": "Fan Vertical Info", "logicalId": "climateControlFanControlDirVer", "type": "info", "subType": "string", "visible": 0,  "historized": 0},
-        {"name": "Fan Vertical", "logicalId": "climateControlFanControlDirVerSelect", "type": "action", "subType": "select", "visible": 1, "info": "climateControlFanControlDirVer", "possibleValue": {
-          "stop": "Arrêter",
-          "swing": "Osciller",
-          "auto": "Auto"
-        }
+      "/leavingWaterTemperature": [
+        {
+          "name": "sensoryData",
+          "logicalId": "mp_1sensoryData",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
         }
       ]
     },
-    "econoMode": [
-      {"name": "Mode Economique", "logicalId": "climateControlEconoMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
-      {"name": "On Economique", "logicalId": "climateControlEconoModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlEconoMode", "widget": "core::binarySwitch"},
-      {"name": "Off Economique", "logicalId": "climateControlEconoModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlEconoMode", "widget": "core::binarySwitch"}
+    "temperatureControl": {
+      "/operationModes/heating/setpoints/roomTemperature": [
+        {
+          "name": "temperatureControl",
+          "logicalId": "mp_1temperatureControl",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ],
+      "/operationModes/heating/setpoints/leavingWaterOffset": [
+        {
+          "name": "temperatureControl",
+          "logicalId": "mp_1temperatureControl",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ]
+    },
+    "operationMode": [
+      {
+        "name": "operationMode",
+        "logicalId": "mp_1operationMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
     ],
-    "comfortMode": [
-      {"name": "Mode Confort", "logicalId": "climateControlConfortMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
-      {"name": "On Confort", "logicalId": "climateControlConfortModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlConfortMode", "widget": "core::binarySwitch"},
-      {"name": "Off Confort", "logicalId": "climateControlConfortModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlConfortMode", "widget": "core::binarySwitch"}
+    "targetTemperature": [
+      {
+        "name": "targetTemperature",
+        "logicalId": "mp_1targetTemperature",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ]
+  },
+  "mp_2": {
+    "name": [
+      {
+        "name": "name",
+        "logicalId": "mp_2name",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "iconId": [
+      {
+        "name": "iconId",
+        "logicalId": "mp_2iconId",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "errorCode": [
+      {
+        "name": "errorCode",
+        "logicalId": "mp_2errorCode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isHolidayModeActive": [
+      {
+        "name": "isHolidayModeActive",
+        "logicalId": "mp_2isHolidayModeActive",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInErrorState": [
+      {
+        "name": "isInErrorState",
+        "logicalId": "mp_2isInErrorState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInWarningState": [
+      {
+        "name": "isInWarningState",
+        "logicalId": "mp_2isInWarningState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInInstallerState": [
+      {
+        "name": "isInInstallerState",
+        "logicalId": "mp_2isInInstallerState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isInEmergencyState": [
+      {
+        "name": "isInEmergencyState",
+        "logicalId": "mp_2isInEmergencyState",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "isPowerfulModeActive": [
+      {
+        "name": "isPowerfulModeActive",
+        "logicalId": "mp_2isPowerfulModeActive",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "onOffMode": [
+      {
+        "name": "onOffMode",
+        "logicalId": "mp_2onOffMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
     ],
     "powerfulMode": [
-      {"name": "Mode Puissant", "logicalId": "climateControlPowerfulMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
-      {"name": "On Puissant", "logicalId": "climateControlPowerfulModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlPowerfulMode", "widget": "core::binarySwitch"},
-      {"name": "Off Puissant", "logicalId": "climateControlPowerfulModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlPowerfulMode", "widget": "core::binarySwitch"}
+      {
+        "name": "powerfulMode",
+        "logicalId": "mp_2powerfulMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
     ],
-    "streamerMode": [
-      {"name": "Mode Streamer", "logicalId": "climateControlStreamerMode", "type": "info", "subType": "binary", "visible": 0, "historized": 0},
-      {"name": "On Streamer", "logicalId": "climateControlStreamerModeOn","type": "action", "subType": "other", "visible": 1, "value": "on", "info": "climateControlStreamerMode", "widget": "core::binarySwitch"},
-      {"name": "Off Streamer", "logicalId": "climateControlStreamerModeOff" ,"type": "action", "subType": "other", "visible": 1,"value": "off", "info": "climateControlStreamerMode", "widget": "core::binarySwitch"}
+    "heatupMode": [
+      {
+        "name": "heatupMode",
+        "logicalId": "mp_2heatupMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "sensoryData": {
+      "/tankTemperature": [
+        {
+          "name": "sensoryData",
+          "logicalId": "mp_2sensoryData",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ]
+    },
+    "temperatureControl": {
+      "/operationModes/heating/setpoints/domesticHotWaterTemperature": [
+        {
+          "name": "temperatureControl",
+          "logicalId": "mp_2temperatureControl",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ]
+    },
+    "operationMode": [
+      {
+        "name": "operationMode",
+        "logicalId": "mp_2operationMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "schedule": {
+      "/currentMode": [
+        {
+          "name": "schedule",
+          "logicalId": "mp_2schedule",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ],
+      "/modes/heating/currentSchedule": [
+        {
+          "name": "schedule",
+          "logicalId": "mp_2schedule",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ],
+      "/modes/heating/enabled": [
+        {
+          "name": "schedule",
+          "logicalId": "mp_2schedule",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ],
+      "/modes/heating/schedules/0/name": [
+        {
+          "name": "schedule",
+          "logicalId": "mp_2schedule",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ],
+      "/modes/heating/schedules/1/name": [
+        {
+          "name": "schedule",
+          "logicalId": "mp_2schedule",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ],
+      "/modes/heating/schedules/2/name": [
+        {
+          "name": "schedule",
+          "logicalId": "mp_2schedule",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ],
+      "/modes/heating/schedules/3/name": [
+        {
+          "name": "schedule",
+          "logicalId": "mp_2schedule",
+          "type": "",
+          "subType": "string",
+          "visible": 0,
+          "historized": 0
+        }
+      ]
+    },
+    "setpointMode": [
+      {
+        "name": "setpointMode",
+        "logicalId": "mp_2setpointMode",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ]
+  },
+  "mp_3": {
+    "name": [
+      {
+        "name": "name",
+        "logicalId": "mp_3name",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "iconId": [
+      {
+        "name": "iconId",
+        "logicalId": "mp_3iconId",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "modelInfo": [
+      {
+        "name": "modelInfo",
+        "logicalId": "mp_3modelInfo",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "softwareVersion": [
+      {
+        "name": "softwareVersion",
+        "logicalId": "mp_3softwareVersion",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "eepromVersion": [
+      {
+        "name": "eepromVersion",
+        "logicalId": "mp_3eepromVersion",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ]
+  },
+  "mp_4": {
+    "name": [
+      {
+        "name": "name",
+        "logicalId": "mp_4name",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "iconId": [
+      {
+        "name": "iconId",
+        "logicalId": "mp_4iconId",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "softwareVersion": [
+      {
+        "name": "softwareVersion",
+        "logicalId": "mp_4softwareVersion",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ]
+  },
+  "mp_5": {
+    "name": [
+      {
+        "name": "name",
+        "logicalId": "mp_5name",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "iconId": [
+      {
+        "name": "iconId",
+        "logicalId": "mp_5iconId",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "softwareVersion": [
+      {
+        "name": "softwareVersion",
+        "logicalId": "mp_5softwareVersion",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
+    ],
+    "eepromVersion": [
+      {
+        "name": "eepromVersion",
+        "logicalId": "mp_5eepromVersion",
+        "type": "",
+        "subType": "string",
+        "visible": 0,
+        "historized": 0
+      }
     ]
   }
 }

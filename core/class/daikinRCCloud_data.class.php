@@ -68,6 +68,11 @@
 
 				if (is_null($_managementPoint) || is_null($_dataPoint)) continue;
 
+				if(substr($_managementPoint, 0, 3) === ""){
+					$_managementPoint = str_replace("mp_", '', $_managementPoint);
+					$_managementPoint = intval($_managementPoint);
+				}
+
 				if (is_null($_dataPointPath)) {
 					if (!isset($data['managementPoints'][$_managementPoint][$_dataPoint])) continue;
 					$pointData = $data['managementPoints'][$_managementPoint][$_dataPoint];

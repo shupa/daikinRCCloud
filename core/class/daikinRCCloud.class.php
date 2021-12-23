@@ -284,6 +284,12 @@ class daikinRCCloudCmd extends cmd {
 
 			$eqLogics = $this->getEqLogic();
 			$deviceID = $eqLogics->getConfiguration('deviceID', false);
+
+			if(substr($managementPoint, 0, 3) === "mp_"){
+				$managementPoint = str_replace("mp_", '', $managementPoint);
+				$managementPoint = intval($managementPoint);
+			}
+
 			$params = array(
 				"managementPoint" =>$managementPoint,
 				"dataPoint" =>$dataPoint,

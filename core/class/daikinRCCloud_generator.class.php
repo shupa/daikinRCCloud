@@ -45,6 +45,8 @@
 				/*** Analyse de tout les Datapoint de chaque Management Points ***/
                 foreach ($managementPoint as $DTName => $dataPoint) {
 					if (!is_array($dataPoint)) continue;
+					if (is_numeric($DTName)) $DTName = "mp_".$DTName;
+
 					/*** Verification de si il y a un DataPointPatch ***/
 					if (isset($dataPoint['settable'])) {
 					    /*** Creation de la commande avec les information ***/
@@ -136,7 +138,8 @@
 			}
 		}
 
-		private static function getSpecDataPatch($dataPatch) {
+		private static function getSpecDataPatch($dataPatch): array
+		{
 		    $result = array("dataPatch"=>"", "commun"=>0, "dataPatchEdit"=>"");
 		    switch ($dataPatch) {
                 case "/operationModes/cooling/fanSpeed/currentMode":
@@ -177,7 +180,6 @@
             return $result;
         }
 
-
 		/** Va permettre d'avoir des json pré générer par le plugin **/
 		public static function generateJson($_eqLogicID) {
 			$_eqLogic = eqLogic::byLogicalId($_eqLogicID, "daikinRCCloud");
@@ -197,7 +199,7 @@
 				foreach ($managementPoint as $dataPointName => $dataPoint) {
 					if (!is_array($dataPoint)) continue;
 
-					if (is_numeric($managementPointName)) $managementPointName = "manage".$managementPointName;
+					if (is_numeric($managementPointName)) $managementPointName = "mp_".$managementPointName;
 
 					if (isset($dataPoint['settable'])) {
 						$result[$managementPointName][$dataPointName][] = array(
